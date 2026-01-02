@@ -1,0 +1,46 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "name": "direto_da_roca",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "direto_da_roca (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "direto_da_roca (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "horta_ui",
+            "cwd": "core_sdk/horta_ui",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "horta_ui (profile mode)",
+            "cwd": "core_sdk/horta_ui",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "horta_ui (release mode)",
+            "cwd": "core_sdk/horta_ui",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
