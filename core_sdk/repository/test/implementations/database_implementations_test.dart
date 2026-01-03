@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:repository/src/implementations/database_implementations.dart';
-import 'package:repository/src/parameters/equals_parameters.dart';
+import 'package:repository/src/parameters/filter_parameters.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../mocks/mocks.dart';
 

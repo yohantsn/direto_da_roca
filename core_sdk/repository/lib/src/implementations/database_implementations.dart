@@ -1,5 +1,5 @@
 import 'package:repository/src/contracts/database_contract.dart';
-import 'package:repository/src/parameters/equals_parameters.dart';
+import 'package:repository/src/parameters/filter_parameters.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DatabaseImplementations implements DatabaseContract {

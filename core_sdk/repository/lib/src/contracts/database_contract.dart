@@ -1,4 +1,4 @@
-import 'package:repository/src/parameters/equals_parameters.dart';
+import 'package:repository/src/parameters/filter_parameters.dart';
 
 abstract interface class DatabaseContract {
   Future<List<Map<String, dynamic>>> readData(
