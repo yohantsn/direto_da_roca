@@ -8,7 +8,7 @@ class Repository {
   Future<void> init() async {
     final instance = await Supabase.initialize(
       url: AppKeys.databaseUrl,
-      anonKey: AppKeys.databaseUrl,
+      anonKey: AppKeys.databaseAnonKey,
     );
 
     IoD.register<DatabaseContract>(DatabaseImplementations(instance));
