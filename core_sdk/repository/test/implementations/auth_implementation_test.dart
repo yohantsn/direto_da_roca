@@ -163,7 +163,7 @@ void main() {
 
   group('signOut', () {
     test('signOut calls auth client signOut', () async {
-      when(mockAuthClient.signOut()).thenAnswer((_) async => null);
+      when(mockAuthClient.signOut()).thenAnswer((_) => Future.value());
 
       await authImpl.signOut();
 

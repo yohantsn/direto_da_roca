@@ -37,6 +37,18 @@ jobs:
           flutter-version: '3.38.3'
           channel: 'stable'
 
+      - name: Create dummy app_keys.dart for testing
+        run: |
+          mkdir -p core_sdk/repository/lib/src/secrets
+          cat > core_sdk/repository/lib/src/secrets/app_keys.dart << 'EOF'
+          //CREATED AUTOMATICALLY, DON'T CHANGE IT!!!
+          // DUMMY KEYS FOR CI/CD TESTING - NOT FOR PRODUCTION
+          class AppKeys {
+            static const String databaseUrl = 'https://dummy-project.supabase.co';
+            static const String databaseAnonKey = 'dummy_anon_key_for_testing_only_not_for_production';
+          }
+          EOF
+
       - name: Install dependencies - ${{ matrix.name }}
         working-directory: ${{ matrix.path }}
         run: flutter pub get
