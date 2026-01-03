@@ -7,10 +7,7 @@ class DatabaseImplementations implements DatabaseContract {
   final Supabase _supabase;
 
   @override
-  Future<List<T>> readData<T>(
-    String tableName, {
-    required FilterParameters filter,
-  }) async {
+  Future<List<T>> readData<T>(String tableName, {required FilterParameters filter}) async {
     final table = _supabase.client.from(tableName);
 
     final result = await _applyFilter(table.select(), filter);
@@ -18,36 +15,23 @@ class DatabaseImplementations implements DatabaseContract {
   }
 
   @override
-  Future<void> deleteData(
-    String tableName, {
-    required FilterParameters filter,
-  }) {
+  Future<void> deleteData(String tableName, {required FilterParameters filter}) {
     final table = _supabase.client.from(tableName);
     return _applyFilter(table.delete(), filter);
   }
 
   @override
-  Future<void> insertData(
-    String tableName, {
-    required Map<String, dynamic> data,
-  }) {
+  Future<void> insertData(String tableName, {required Map<String, dynamic> data}) {
     return _supabase.client.from(tableName).insert(data);
   }
 
   @override
-  Future<void> updateData(
-    String tableName, {
-    required Map<String, dynamic> data,
-    required FilterParameters filter,
-  }) {
+  Future<void> updateData(String tableName, {required Map<String, dynamic> data, required FilterParameters filter}) {
     final table = _supabase.client.from(tableName);
     return _applyFilter(table.update(data), filter);
   }
 
-  Future<PostgrestFilterBuilder> _applyFilter(
-    PostgrestFilterBuilder builder,
-    FilterParameters filter,
-  ) async {
+  Future<PostgrestFilterBuilder> _applyFilter(PostgrestFilterBuilder builder, FilterParameters filter) async {
     return switch (filter.filterType) {
       FilterType.equals => builder.eq(filter.key, filter.value),
       FilterType.greaterThan => builder.gt(filter.key, filter.value),

@@ -6,6 +6,5 @@ class Coordinates {
 
   Map<String, dynamic> toJson() => {'lat': lat, 'lng': lng};
 
-  factory Coordinates.fromJson(Map<String, dynamic> json) =>
-      Coordinates(lat: json['lat'], lng: json['lng']);
+  factory Coordinates.fromJson(Map<String, dynamic> json) => Coordinates(lat: json['lat'], lng: json['lng']);
 }

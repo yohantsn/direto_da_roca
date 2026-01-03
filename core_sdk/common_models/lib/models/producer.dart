@@ -31,9 +31,7 @@ class Producer {
       isVerified: json['is_verified'] ?? false,
       location: Location.fromJson(json['location_data'] ?? {}),
       // Mapeia a lista de produtos se ela vier no JOIN do Supabase
-      products: json['products'] != null
-          ? (json['products'] as List).map((p) => Product.fromJson(p)).toList()
-          : null,
+      products: json['products'] != null ? (json['products'] as List).map((p) => Product.fromJson(p)).toList() : null,
     );
   }
   Map<String, dynamic> toJson() => {

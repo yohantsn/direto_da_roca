@@ -57,23 +57,16 @@ void main() {
 
       expect(result.userId, userId);
       expect(result.userEmail, email);
-      verify(
-        mockAuthClient.signInWithPassword(email: email, password: password),
-      ).called(1);
+      verify(mockAuthClient.signInWithPassword(email: email, password: password)).called(1);
     });
 
     test('signIn throws UserNotFoundException when user_not_found', () async {
       when(
         mockAuthClient.signInWithPassword(email: email, password: password),
-      ).thenThrow(
-        AuthApiException('User not found', statusCode: 'user_not_found'),
-      );
+      ).thenThrow(AuthApiException('User not found', statusCode: 'user_not_found'));
 
       final params = AuthParameters(email, password);
-      expect(
-        () => authImpl.signIn(params),
-        throwsA(isA<UserNotFoundException>()),
-      );
+      expect(() => authImpl.signIn(params), throwsA(isA<UserNotFoundException>()));
     });
 
     test('signIn throws OtherException for other errors', () async {
@@ -106,49 +99,31 @@ void main() {
       verify(mockAuthClient.signUp(email: email, password: password)).called(1);
     });
 
-    test(
-      'signUp throws EmailInvalidException when email_address_invalid',
-      () async {
-        when(mockAuthClient.signUp(email: email, password: password)).thenThrow(
-          AuthApiException(
-            'Invalid email',
-            statusCode: 'email_address_invalid',
-          ),
-        );
-
-        final params = AuthParameters(email, password);
-        expect(
-          () => authImpl.signUp(params),
-          throwsA(isA<EmailInvalidException>()),
-        );
-      },
-    );
-
-    test(
-      'signUp throws UserAlreadyExistsException when email_exists',
-      () async {
-        when(mockAuthClient.signUp(email: email, password: password)).thenThrow(
-          AuthApiException('User already exists', statusCode: 'email_exists'),
-        );
-
-        final params = AuthParameters(email, password);
-        expect(
-          () => authImpl.signUp(params),
-          throwsA(isA<UserAlreadyExistsException>()),
-        );
-      },
-    );
-
-    test('signUp throws PasswordWeakException when weak_password', () async {
-      when(mockAuthClient.signUp(email: email, password: password)).thenThrow(
-        AuthApiException('Password too weak', statusCode: 'weak_password'),
-      );
+    test('signUp throws EmailInvalidException when email_address_invalid', () async {
+      when(
+        mockAuthClient.signUp(email: email, password: password),
+      ).thenThrow(AuthApiException('Invalid email', statusCode: 'email_address_invalid'));
 
       final params = AuthParameters(email, password);
-      expect(
-        () => authImpl.signUp(params),
-        throwsA(isA<PasswordWeakException>()),
-      );
+      expect(() => authImpl.signUp(params), throwsA(isA<EmailInvalidException>()));
+    });
+
+    test('signUp throws UserAlreadyExistsException when email_exists', () async {
+      when(
+        mockAuthClient.signUp(email: email, password: password),
+      ).thenThrow(AuthApiException('User already exists', statusCode: 'email_exists'));
+
+      final params = AuthParameters(email, password);
+      expect(() => authImpl.signUp(params), throwsA(isA<UserAlreadyExistsException>()));
+    });
+
+    test('signUp throws PasswordWeakException when weak_password', () async {
+      when(
+        mockAuthClient.signUp(email: email, password: password),
+      ).thenThrow(AuthApiException('Password too weak', statusCode: 'weak_password'));
+
+      final params = AuthParameters(email, password);
+      expect(() => authImpl.signUp(params), throwsA(isA<PasswordWeakException>()));
     });
 
     test('signUp throws OtherException for unknown errors', () async {
@@ -175,38 +150,25 @@ void main() {
     const newPassword = 'newPassword123';
 
     test('changePassword success', () async {
-      when(
-        mockAuthClient.updateUser(any),
-      ).thenAnswer((_) async => mockUserResponse);
+      when(mockAuthClient.updateUser(any)).thenAnswer((_) async => mockUserResponse);
 
       await authImpl.changePassword(newPassword);
 
       verify(mockAuthClient.updateUser(any)).called(1);
     });
 
-    test(
-      'changePassword throws PasswordWeakException when weak_password',
-      () async {
-        when(mockAuthClient.updateUser(any)).thenThrow(
-          AuthApiException('Password too weak', statusCode: 'weak_password'),
-        );
-
-        expect(
-          () => authImpl.changePassword(newPassword),
-          throwsA(isA<PasswordWeakException>()),
-        );
-      },
-    );
-
-    test('changePassword throws OtherException for other errors', () async {
+    test('changePassword throws PasswordWeakException when weak_password', () async {
       when(
         mockAuthClient.updateUser(any),
-      ).thenThrow(AuthApiException('Some error', statusCode: 'unknown_error'));
+      ).thenThrow(AuthApiException('Password too weak', statusCode: 'weak_password'));
 
-      expect(
-        () => authImpl.changePassword(newPassword),
-        throwsA(isA<OtherException>()),
-      );
+      expect(() => authImpl.changePassword(newPassword), throwsA(isA<PasswordWeakException>()));
+    });
+
+    test('changePassword throws OtherException for other errors', () async {
+      when(mockAuthClient.updateUser(any)).thenThrow(AuthApiException('Some error', statusCode: 'unknown_error'));
+
+      expect(() => authImpl.changePassword(newPassword), throwsA(isA<OtherException>()));
     });
   });
 }

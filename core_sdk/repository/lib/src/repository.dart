@@ -7,10 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Repository {
   Future<void> init() async {
-    final instance = await Supabase.initialize(
-      url: AppKeys.databaseUrl,
-      anonKey: AppKeys.databaseAnonKey,
-    );
+    final instance = await Supabase.initialize(url: AppKeys.databaseUrl, anonKey: AppKeys.databaseAnonKey);
 
     IoD.register<DatabaseContract>(DatabaseImplementations(instance));
     IoD.register<AuthContract>(AuthImplementation(instance));
@@ -21,9 +18,7 @@ class Repository {
     try {
       return IoD.read<DatabaseContract>();
     } catch (_) {
-      throw Exception(
-        "Repository not instantiated, please, call the init function before use it.",
-      );
+      throw Exception("Repository not instantiated, please, call the init function before use it.");
     }
   }
 
@@ -32,9 +27,7 @@ class Repository {
     try {
       return IoD.read<AuthContract>();
     } catch (_) {
-      throw Exception(
-        "Repository not instantiated, please, call the init function before use it.",
-      );
+      throw Exception("Repository not instantiated, please, call the init function before use it.");
     }
   }
 }

@@ -14,10 +14,7 @@ class AuthImplementation implements AuthContract {
   @override
   Future<AuthUserResponse> signIn(AuthParameters params) async {
     try {
-      final response = await _authClient.signInWithPassword(
-        email: params.email,
-        password: params.password,
-      );
+      final response = await _authClient.signInWithPassword(email: params.email, password: params.password);
 
       final user = response.user;
       if (user == null) {
@@ -37,10 +34,7 @@ class AuthImplementation implements AuthContract {
   @override
   Future<AuthUserResponse> signUp(AuthParameters params) async {
     try {
-      final response = await _authClient.signUp(
-        email: params.email,
-        password: params.password,
-      );
+      final response = await _authClient.signUp(email: params.email, password: params.password);
 
       final user = response.user;
       if (user == null) {

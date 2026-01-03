@@ -16,10 +16,7 @@ class HortaScaffold extends StatelessWidget {
           image: DecorationImage(
             image: AssetImage(HortaAssets.background),
             fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Colors.black.withValues(alpha: 0.05),
-              BlendMode.dstATop,
-            ),
+            colorFilter: ColorFilter.mode(Colors.black.withValues(alpha: 0.05), BlendMode.dstATop),
           ),
         ),
         child: body,

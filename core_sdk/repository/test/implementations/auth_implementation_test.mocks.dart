@@ -28,59 +28,44 @@ import 'package:supabase_flutter/src/supabase.dart' as _i3;
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
-class _FakeSupabaseClient_0 extends _i1.SmartFake
-    implements _i2.SupabaseClient {
-  _FakeSupabaseClient_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+class _FakeSupabaseClient_0 extends _i1.SmartFake implements _i2.SupabaseClient {
+  _FakeSupabaseClient_0(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
-class _FakeGoTrueAdminApi_1 extends _i1.SmartFake
-    implements _i2.GoTrueAdminApi {
-  _FakeGoTrueAdminApi_1(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+class _FakeGoTrueAdminApi_1 extends _i1.SmartFake implements _i2.GoTrueAdminApi {
+  _FakeGoTrueAdminApi_1(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeGoTrueMFAApi_2 extends _i1.SmartFake implements _i2.GoTrueMFAApi {
-  _FakeGoTrueMFAApi_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeGoTrueMFAApi_2(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeAuthResponse_3 extends _i1.SmartFake implements _i2.AuthResponse {
-  _FakeAuthResponse_3(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeAuthResponse_3(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeOAuthResponse_4 extends _i1.SmartFake implements _i2.OAuthResponse {
-  _FakeOAuthResponse_4(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeOAuthResponse_4(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
-class _FakeAuthSessionUrlResponse_5 extends _i1.SmartFake
-    implements _i2.AuthSessionUrlResponse {
-  _FakeAuthSessionUrlResponse_5(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+class _FakeAuthSessionUrlResponse_5 extends _i1.SmartFake implements _i2.AuthSessionUrlResponse {
+  _FakeAuthSessionUrlResponse_5(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
-class _FakeResendResponse_6 extends _i1.SmartFake
-    implements _i2.ResendResponse {
-  _FakeResendResponse_6(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+class _FakeResendResponse_6 extends _i1.SmartFake implements _i2.ResendResponse {
+  _FakeResendResponse_6(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeUserResponse_7 extends _i1.SmartFake implements _i2.UserResponse {
-  _FakeUserResponse_7(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeUserResponse_7(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 class _FakeObject_8 extends _i1.SmartFake implements Object {
-  _FakeObject_8(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+  _FakeObject_8(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
-class _FakeGetClaimsResponse_9 extends _i1.SmartFake
-    implements _i2.GetClaimsResponse {
-  _FakeGetClaimsResponse_9(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+class _FakeGetClaimsResponse_9 extends _i1.SmartFake implements _i2.GetClaimsResponse {
+  _FakeGetClaimsResponse_9(Object parent, Invocation parentInvocation) : super(parent, parentInvocation);
 }
 
 /// A class which mocks [Supabase].
@@ -92,26 +77,19 @@ class MockSupabase extends _i1.Mock implements _i3.Supabase {
   }
 
   @override
-  bool get isInitialized =>
-      (super.noSuchMethod(Invocation.getter(#isInitialized), returnValue: false)
-          as bool);
+  bool get isInitialized => (super.noSuchMethod(Invocation.getter(#isInitialized), returnValue: false) as bool);
 
   @override
   _i2.SupabaseClient get client =>
       (super.noSuchMethod(
             Invocation.getter(#client),
-            returnValue: _FakeSupabaseClient_0(
-              this,
-              Invocation.getter(#client),
-            ),
+            returnValue: _FakeSupabaseClient_0(this, Invocation.getter(#client)),
           )
           as _i2.SupabaseClient);
 
   @override
-  set client(_i2.SupabaseClient? value) => super.noSuchMethod(
-    Invocation.setter(#client, value),
-    returnValueForMissingStub: null,
-  );
+  set client(_i2.SupabaseClient? value) =>
+      super.noSuchMethod(Invocation.setter(#client, value), returnValueForMissingStub: null);
 
   @override
   _i4.Future<void> dispose() =>
@@ -124,10 +102,7 @@ class MockSupabase extends _i1.Mock implements _i3.Supabase {
 
   @override
   void didChangeAppLifecycleState(_i5.AppLifecycleState? state) =>
-      super.noSuchMethod(
-        Invocation.method(#didChangeAppLifecycleState, [state]),
-        returnValueForMissingStub: null,
-      );
+      super.noSuchMethod(Invocation.method(#didChangeAppLifecycleState, [state]), returnValueForMissingStub: null);
 
   @override
   _i4.Future<void> onResumed() =>
@@ -140,51 +115,34 @@ class MockSupabase extends _i1.Mock implements _i3.Supabase {
 
   @override
   _i4.Future<bool> didPopRoute() =>
-      (super.noSuchMethod(
-            Invocation.method(#didPopRoute, []),
-            returnValue: _i4.Future<bool>.value(false),
-          )
+      (super.noSuchMethod(Invocation.method(#didPopRoute, []), returnValue: _i4.Future<bool>.value(false))
           as _i4.Future<bool>);
 
   @override
   bool handleStartBackGesture(_i6.PredictiveBackEvent? backEvent) =>
-      (super.noSuchMethod(
-            Invocation.method(#handleStartBackGesture, [backEvent]),
-            returnValue: false,
-          )
-          as bool);
+      (super.noSuchMethod(Invocation.method(#handleStartBackGesture, [backEvent]), returnValue: false) as bool);
 
   @override
-  void handleUpdateBackGestureProgress(_i6.PredictiveBackEvent? backEvent) =>
-      super.noSuchMethod(
-        Invocation.method(#handleUpdateBackGestureProgress, [backEvent]),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  void handleCommitBackGesture() => super.noSuchMethod(
-    Invocation.method(#handleCommitBackGesture, []),
+  void handleUpdateBackGestureProgress(_i6.PredictiveBackEvent? backEvent) => super.noSuchMethod(
+    Invocation.method(#handleUpdateBackGestureProgress, [backEvent]),
     returnValueForMissingStub: null,
   );
 
   @override
-  void handleCancelBackGesture() => super.noSuchMethod(
-    Invocation.method(#handleCancelBackGesture, []),
-    returnValueForMissingStub: null,
-  );
+  void handleCommitBackGesture() =>
+      super.noSuchMethod(Invocation.method(#handleCommitBackGesture, []), returnValueForMissingStub: null);
+
+  @override
+  void handleCancelBackGesture() =>
+      super.noSuchMethod(Invocation.method(#handleCancelBackGesture, []), returnValueForMissingStub: null);
 
   @override
   _i4.Future<bool> didPushRoute(String? route) =>
-      (super.noSuchMethod(
-            Invocation.method(#didPushRoute, [route]),
-            returnValue: _i4.Future<bool>.value(false),
-          )
+      (super.noSuchMethod(Invocation.method(#didPushRoute, [route]), returnValue: _i4.Future<bool>.value(false))
           as _i4.Future<bool>);
 
   @override
-  _i4.Future<bool> didPushRouteInformation(
-    _i7.RouteInformation? routeInformation,
-  ) =>
+  _i4.Future<bool> didPushRouteInformation(_i7.RouteInformation? routeInformation) =>
       (super.noSuchMethod(
             Invocation.method(#didPushRouteInformation, [routeInformation]),
             returnValue: _i4.Future<bool>.value(false),
@@ -192,56 +150,40 @@ class MockSupabase extends _i1.Mock implements _i3.Supabase {
           as _i4.Future<bool>);
 
   @override
-  void didChangeMetrics() => super.noSuchMethod(
-    Invocation.method(#didChangeMetrics, []),
-    returnValueForMissingStub: null,
-  );
+  void didChangeMetrics() =>
+      super.noSuchMethod(Invocation.method(#didChangeMetrics, []), returnValueForMissingStub: null);
 
   @override
-  void didChangeTextScaleFactor() => super.noSuchMethod(
-    Invocation.method(#didChangeTextScaleFactor, []),
-    returnValueForMissingStub: null,
-  );
+  void didChangeTextScaleFactor() =>
+      super.noSuchMethod(Invocation.method(#didChangeTextScaleFactor, []), returnValueForMissingStub: null);
 
   @override
-  void didChangePlatformBrightness() => super.noSuchMethod(
-    Invocation.method(#didChangePlatformBrightness, []),
-    returnValueForMissingStub: null,
-  );
+  void didChangePlatformBrightness() =>
+      super.noSuchMethod(Invocation.method(#didChangePlatformBrightness, []), returnValueForMissingStub: null);
 
   @override
-  void didChangeLocales(List<_i5.Locale>? locales) => super.noSuchMethod(
-    Invocation.method(#didChangeLocales, [locales]),
-    returnValueForMissingStub: null,
-  );
+  void didChangeLocales(List<_i5.Locale>? locales) =>
+      super.noSuchMethod(Invocation.method(#didChangeLocales, [locales]), returnValueForMissingStub: null);
 
   @override
-  void didChangeViewFocus(_i5.ViewFocusEvent? event) => super.noSuchMethod(
-    Invocation.method(#didChangeViewFocus, [event]),
-    returnValueForMissingStub: null,
-  );
+  void didChangeViewFocus(_i5.ViewFocusEvent? event) =>
+      super.noSuchMethod(Invocation.method(#didChangeViewFocus, [event]), returnValueForMissingStub: null);
 
   @override
   _i4.Future<_i5.AppExitResponse> didRequestAppExit() =>
       (super.noSuchMethod(
             Invocation.method(#didRequestAppExit, []),
-            returnValue: _i4.Future<_i5.AppExitResponse>.value(
-              _i5.AppExitResponse.exit,
-            ),
+            returnValue: _i4.Future<_i5.AppExitResponse>.value(_i5.AppExitResponse.exit),
           )
           as _i4.Future<_i5.AppExitResponse>);
 
   @override
-  void didHaveMemoryPressure() => super.noSuchMethod(
-    Invocation.method(#didHaveMemoryPressure, []),
-    returnValueForMissingStub: null,
-  );
+  void didHaveMemoryPressure() =>
+      super.noSuchMethod(Invocation.method(#didHaveMemoryPressure, []), returnValueForMissingStub: null);
 
   @override
-  void didChangeAccessibilityFeatures() => super.noSuchMethod(
-    Invocation.method(#didChangeAccessibilityFeatures, []),
-    returnValueForMissingStub: null,
-  );
+  void didChangeAccessibilityFeatures() =>
+      super.noSuchMethod(Invocation.method(#didChangeAccessibilityFeatures, []), returnValueForMissingStub: null);
 }
 
 /// A class which mocks [GoTrueClient].
@@ -262,65 +204,39 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
 
   @override
   _i2.GoTrueMFAApi get mfa =>
-      (super.noSuchMethod(
-            Invocation.getter(#mfa),
-            returnValue: _FakeGoTrueMFAApi_2(this, Invocation.getter(#mfa)),
-          )
+      (super.noSuchMethod(Invocation.getter(#mfa), returnValue: _FakeGoTrueMFAApi_2(this, Invocation.getter(#mfa)))
           as _i2.GoTrueMFAApi);
 
   @override
   _i4.Stream<_i2.AuthState> get onAuthStateChange =>
-      (super.noSuchMethod(
-            Invocation.getter(#onAuthStateChange),
-            returnValue: _i4.Stream<_i2.AuthState>.empty(),
-          )
+      (super.noSuchMethod(Invocation.getter(#onAuthStateChange), returnValue: _i4.Stream<_i2.AuthState>.empty())
           as _i4.Stream<_i2.AuthState>);
 
   @override
   _i4.Stream<_i2.AuthState> get onAuthStateChangeSync =>
-      (super.noSuchMethod(
-            Invocation.getter(#onAuthStateChangeSync),
-            returnValue: _i4.Stream<_i2.AuthState>.empty(),
-          )
+      (super.noSuchMethod(Invocation.getter(#onAuthStateChangeSync), returnValue: _i4.Stream<_i2.AuthState>.empty())
           as _i4.Stream<_i2.AuthState>);
 
   @override
   Map<String, String> get headers =>
+      (super.noSuchMethod(Invocation.getter(#headers), returnValue: <String, String>{}) as Map<String, String>);
+
+  @override
+  set admin(_i2.GoTrueAdminApi? value) =>
+      super.noSuchMethod(Invocation.setter(#admin, value), returnValueForMissingStub: null);
+
+  @override
+  set mfa(_i2.GoTrueMFAApi? value) =>
+      super.noSuchMethod(Invocation.setter(#mfa, value), returnValueForMissingStub: null);
+
+  @override
+  _i4.Future<_i2.AuthResponse> signInAnonymously({Map<String, dynamic>? data, String? captchaToken}) =>
       (super.noSuchMethod(
-            Invocation.getter(#headers),
-            returnValue: <String, String>{},
-          )
-          as Map<String, String>);
-
-  @override
-  set admin(_i2.GoTrueAdminApi? value) => super.noSuchMethod(
-    Invocation.setter(#admin, value),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  set mfa(_i2.GoTrueMFAApi? value) => super.noSuchMethod(
-    Invocation.setter(#mfa, value),
-    returnValueForMissingStub: null,
-  );
-
-  @override
-  _i4.Future<_i2.AuthResponse> signInAnonymously({
-    Map<String, dynamic>? data,
-    String? captchaToken,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#signInAnonymously, [], {
-              #data: data,
-              #captchaToken: captchaToken,
-            }),
+            Invocation.method(#signInAnonymously, [], {#data: data, #captchaToken: captchaToken}),
             returnValue: _i4.Future<_i2.AuthResponse>.value(
               _FakeAuthResponse_3(
                 this,
-                Invocation.method(#signInAnonymously, [], {
-                  #data: data,
-                  #captchaToken: captchaToken,
-                }),
+                Invocation.method(#signInAnonymously, [], {#data: data, #captchaToken: captchaToken}),
               ),
             ),
           )
@@ -420,16 +336,11 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
           as _i4.Future<_i2.OAuthResponse>);
 
   @override
-  _i4.Future<_i2.AuthSessionUrlResponse> exchangeCodeForSession(
-    String? authCode,
-  ) =>
+  _i4.Future<_i2.AuthSessionUrlResponse> exchangeCodeForSession(String? authCode) =>
       (super.noSuchMethod(
             Invocation.method(#exchangeCodeForSession, [authCode]),
             returnValue: _i4.Future<_i2.AuthSessionUrlResponse>.value(
-              _FakeAuthSessionUrlResponse_5(
-                this,
-                Invocation.method(#exchangeCodeForSession, [authCode]),
-              ),
+              _FakeAuthSessionUrlResponse_5(this, Invocation.method(#exchangeCodeForSession, [authCode])),
             ),
           )
           as _i4.Future<_i2.AuthSessionUrlResponse>);
@@ -528,12 +439,7 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
           as _i4.Future<_i2.AuthResponse>);
 
   @override
-  _i4.Future<String> getSSOSignInUrl({
-    String? providerId,
-    String? domain,
-    String? redirectTo,
-    String? captchaToken,
-  }) =>
+  _i4.Future<String> getSSOSignInUrl({String? providerId, String? domain, String? redirectTo, String? captchaToken}) =>
       (super.noSuchMethod(
             Invocation.method(#getSSOSignInUrl, [], {
               #providerId: providerId,
@@ -560,10 +466,7 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
       (super.noSuchMethod(
             Invocation.method(#refreshSession, [refreshToken]),
             returnValue: _i4.Future<_i2.AuthResponse>.value(
-              _FakeAuthResponse_3(
-                this,
-                Invocation.method(#refreshSession, [refreshToken]),
-              ),
+              _FakeAuthResponse_3(this, Invocation.method(#refreshSession, [refreshToken])),
             ),
           )
           as _i4.Future<_i2.AuthResponse>);
@@ -619,24 +522,13 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
           as _i4.Future<_i2.UserResponse>);
 
   @override
-  _i4.Future<_i2.UserResponse> updateUser(
-    _i2.UserAttributes? attributes, {
-    String? emailRedirectTo,
-  }) =>
+  _i4.Future<_i2.UserResponse> updateUser(_i2.UserAttributes? attributes, {String? emailRedirectTo}) =>
       (super.noSuchMethod(
-            Invocation.method(
-              #updateUser,
-              [attributes],
-              {#emailRedirectTo: emailRedirectTo},
-            ),
+            Invocation.method(#updateUser, [attributes], {#emailRedirectTo: emailRedirectTo}),
             returnValue: _i4.Future<_i2.UserResponse>.value(
               _FakeUserResponse_7(
                 this,
-                Invocation.method(
-                  #updateUser,
-                  [attributes],
-                  {#emailRedirectTo: emailRedirectTo},
-                ),
+                Invocation.method(#updateUser, [attributes], {#emailRedirectTo: emailRedirectTo}),
               ),
             ),
           )
@@ -647,42 +539,26 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
       (super.noSuchMethod(
             Invocation.method(#setSession, [refreshToken]),
             returnValue: _i4.Future<_i2.AuthResponse>.value(
-              _FakeAuthResponse_3(
-                this,
-                Invocation.method(#setSession, [refreshToken]),
-              ),
+              _FakeAuthResponse_3(this, Invocation.method(#setSession, [refreshToken])),
             ),
           )
           as _i4.Future<_i2.AuthResponse>);
 
   @override
-  _i4.Future<_i2.AuthSessionUrlResponse> getSessionFromUrl(
-    Uri? originUrl, {
-    bool? storeSession = true,
-  }) =>
+  _i4.Future<_i2.AuthSessionUrlResponse> getSessionFromUrl(Uri? originUrl, {bool? storeSession = true}) =>
       (super.noSuchMethod(
-            Invocation.method(
-              #getSessionFromUrl,
-              [originUrl],
-              {#storeSession: storeSession},
-            ),
+            Invocation.method(#getSessionFromUrl, [originUrl], {#storeSession: storeSession}),
             returnValue: _i4.Future<_i2.AuthSessionUrlResponse>.value(
               _FakeAuthSessionUrlResponse_5(
                 this,
-                Invocation.method(
-                  #getSessionFromUrl,
-                  [originUrl],
-                  {#storeSession: storeSession},
-                ),
+                Invocation.method(#getSessionFromUrl, [originUrl], {#storeSession: storeSession}),
               ),
             ),
           )
           as _i4.Future<_i2.AuthSessionUrlResponse>);
 
   @override
-  _i4.Future<void> signOut({
-    _i2.SignOutScope? scope = _i2.SignOutScope.local,
-  }) =>
+  _i4.Future<void> signOut({_i2.SignOutScope? scope = _i2.SignOutScope.local}) =>
       (super.noSuchMethod(
             Invocation.method(#signOut, [], {#scope: scope}),
             returnValue: _i4.Future<void>.value(),
@@ -691,17 +567,9 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
           as _i4.Future<void>);
 
   @override
-  _i4.Future<void> resetPasswordForEmail(
-    String? email, {
-    String? redirectTo,
-    String? captchaToken,
-  }) =>
+  _i4.Future<void> resetPasswordForEmail(String? email, {String? redirectTo, String? captchaToken}) =>
       (super.noSuchMethod(
-            Invocation.method(
-              #resetPasswordForEmail,
-              [email],
-              {#redirectTo: redirectTo, #captchaToken: captchaToken},
-            ),
+            Invocation.method(#resetPasswordForEmail, [email], {#redirectTo: redirectTo, #captchaToken: captchaToken}),
             returnValue: _i4.Future<void>.value(),
             returnValueForMissingStub: _i4.Future<void>.value(),
           )
@@ -711,9 +579,7 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
   _i4.Future<List<_i2.UserIdentity>> getUserIdentities() =>
       (super.noSuchMethod(
             Invocation.method(#getUserIdentities, []),
-            returnValue: _i4.Future<List<_i2.UserIdentity>>.value(
-              <_i2.UserIdentity>[],
-            ),
+            returnValue: _i4.Future<List<_i2.UserIdentity>>.value(<_i2.UserIdentity>[]),
           )
           as _i4.Future<List<_i2.UserIdentity>>);
 
@@ -759,11 +625,7 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
             Invocation.method(
               #getLinkIdentityUrl,
               [provider],
-              {
-                #redirectTo: redirectTo,
-                #scopes: scopes,
-                #queryParams: queryParams,
-              },
+              {#redirectTo: redirectTo, #scopes: scopes, #queryParams: queryParams},
             ),
             returnValue: _i4.Future<_i2.OAuthResponse>.value(
               _FakeOAuthResponse_4(
@@ -771,11 +633,7 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
                 Invocation.method(
                   #getLinkIdentityUrl,
                   [provider],
-                  {
-                    #redirectTo: redirectTo,
-                    #scopes: scopes,
-                    #queryParams: queryParams,
-                  },
+                  {#redirectTo: redirectTo, #scopes: scopes, #queryParams: queryParams},
                 ),
               ),
             ),
@@ -805,69 +663,43 @@ class MockGoTrueClient extends _i1.Mock implements _i2.GoTrueClient {
       (super.noSuchMethod(
             Invocation.method(#recoverSession, [jsonStr]),
             returnValue: _i4.Future<_i2.AuthResponse>.value(
-              _FakeAuthResponse_3(
-                this,
-                Invocation.method(#recoverSession, [jsonStr]),
-              ),
+              _FakeAuthResponse_3(this, Invocation.method(#recoverSession, [jsonStr])),
             ),
           )
           as _i4.Future<_i2.AuthResponse>);
 
   @override
-  void startAutoRefresh() => super.noSuchMethod(
-    Invocation.method(#startAutoRefresh, []),
-    returnValueForMissingStub: null,
-  );
+  void startAutoRefresh() =>
+      super.noSuchMethod(Invocation.method(#startAutoRefresh, []), returnValueForMissingStub: null);
 
   @override
-  void stopAutoRefresh() => super.noSuchMethod(
-    Invocation.method(#stopAutoRefresh, []),
-    returnValueForMissingStub: null,
-  );
+  void stopAutoRefresh() =>
+      super.noSuchMethod(Invocation.method(#stopAutoRefresh, []), returnValueForMissingStub: null);
 
   @override
-  void dispose() => super.noSuchMethod(
-    Invocation.method(#dispose, []),
-    returnValueForMissingStub: null,
-  );
+  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []), returnValueForMissingStub: null);
 
   @override
-  void notifyAllSubscribers(
-    _i2.AuthChangeEvent? event, {
-    _i2.Session? session,
-    bool? broadcast = true,
-  }) => super.noSuchMethod(
-    Invocation.method(
-      #notifyAllSubscribers,
-      [event],
-      {#session: session, #broadcast: broadcast},
-    ),
-    returnValueForMissingStub: null,
-  );
+  void notifyAllSubscribers(_i2.AuthChangeEvent? event, {_i2.Session? session, bool? broadcast = true}) =>
+      super.noSuchMethod(
+        Invocation.method(#notifyAllSubscribers, [event], {#session: session, #broadcast: broadcast}),
+        returnValueForMissingStub: null,
+      );
 
   @override
   Object notifyException(Object? exception, [StackTrace? stackTrace]) =>
       (super.noSuchMethod(
             Invocation.method(#notifyException, [exception, stackTrace]),
-            returnValue: _FakeObject_8(
-              this,
-              Invocation.method(#notifyException, [exception, stackTrace]),
-            ),
+            returnValue: _FakeObject_8(this, Invocation.method(#notifyException, [exception, stackTrace])),
           )
           as Object);
 
   @override
-  _i4.Future<_i2.GetClaimsResponse> getClaims([
-    String? jwt,
-    _i2.GetClaimsOptions? options,
-  ]) =>
+  _i4.Future<_i2.GetClaimsResponse> getClaims([String? jwt, _i2.GetClaimsOptions? options]) =>
       (super.noSuchMethod(
             Invocation.method(#getClaims, [jwt, options]),
             returnValue: _i4.Future<_i2.GetClaimsResponse>.value(
-              _FakeGetClaimsResponse_9(
-                this,
-                Invocation.method(#getClaims, [jwt, options]),
-              ),
+              _FakeGetClaimsResponse_9(this, Invocation.method(#getClaims, [jwt, options])),
             ),
           )
           as _i4.Future<_i2.GetClaimsResponse>);
@@ -883,51 +715,32 @@ class MockUser extends _i1.Mock implements _i2.User {
 
   @override
   String get id =>
-      (super.noSuchMethod(
-            Invocation.getter(#id),
-            returnValue: _i8.dummyValue<String>(this, Invocation.getter(#id)),
-          )
+      (super.noSuchMethod(Invocation.getter(#id), returnValue: _i8.dummyValue<String>(this, Invocation.getter(#id)))
           as String);
 
   @override
   Map<String, dynamic> get appMetadata =>
-      (super.noSuchMethod(
-            Invocation.getter(#appMetadata),
-            returnValue: <String, dynamic>{},
-          )
-          as Map<String, dynamic>);
+      (super.noSuchMethod(Invocation.getter(#appMetadata), returnValue: <String, dynamic>{}) as Map<String, dynamic>);
 
   @override
   String get aud =>
-      (super.noSuchMethod(
-            Invocation.getter(#aud),
-            returnValue: _i8.dummyValue<String>(this, Invocation.getter(#aud)),
-          )
+      (super.noSuchMethod(Invocation.getter(#aud), returnValue: _i8.dummyValue<String>(this, Invocation.getter(#aud)))
           as String);
 
   @override
   String get createdAt =>
       (super.noSuchMethod(
             Invocation.getter(#createdAt),
-            returnValue: _i8.dummyValue<String>(
-              this,
-              Invocation.getter(#createdAt),
-            ),
+            returnValue: _i8.dummyValue<String>(this, Invocation.getter(#createdAt)),
           )
           as String);
 
   @override
-  bool get isAnonymous =>
-      (super.noSuchMethod(Invocation.getter(#isAnonymous), returnValue: false)
-          as bool);
+  bool get isAnonymous => (super.noSuchMethod(Invocation.getter(#isAnonymous), returnValue: false) as bool);
 
   @override
   Map<String, dynamic> toJson() =>
-      (super.noSuchMethod(
-            Invocation.method(#toJson, []),
-            returnValue: <String, dynamic>{},
-          )
-          as Map<String, dynamic>);
+      (super.noSuchMethod(Invocation.method(#toJson, []), returnValue: <String, dynamic>{}) as Map<String, dynamic>);
 }
 
 /// A class which mocks [UserResponse].

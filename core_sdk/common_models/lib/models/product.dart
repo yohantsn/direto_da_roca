@@ -2,16 +2,7 @@ enum Availability { available, outOfStock, seasonal }
 
 enum UnityType { kg, unit, liter, gram }
 
-enum ProductType {
-  vegetables,
-  eggs,
-  cheese,
-  milk,
-  leguminous,
-  honey,
-  jam,
-  others,
-}
+enum ProductType { vegetables, eggs, cheese, milk, leguminous, honey, jam, others }
 
 class Product {
   final int? id;
