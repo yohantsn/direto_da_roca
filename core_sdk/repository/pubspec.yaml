@@ -20,6 +20,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  mock_supabase_http_client: ^0.0.3
 
 
 flutter:
