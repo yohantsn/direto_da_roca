@@ -10,7 +10,7 @@ def generate():
     try:
         input_data = sys.stdin.read()
         if not input_data:
-            print("Error: any data received from BWS")
+            print("Error: no data received from BWS")
             return
 
         secrets = json.loads(input_data)
@@ -23,7 +23,7 @@ def generate():
         output_path = os.path.join(output_dir, "app_keys.dart")
 
         lines = [
-            "//CREATED AUTOMATICALLY, DON'T CHANGED IT!!!",
+            "//CREATED AUTOMATICALLY, DON'T CHANGE IT!!!",
             "class AppKeys {"
         ]
 

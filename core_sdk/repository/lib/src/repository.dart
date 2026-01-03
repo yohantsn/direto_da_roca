@@ -16,21 +16,25 @@ class Repository {
     IoD.register<AuthContract>(AuthImplementation(instance));
   }
 
-  /// return an instance from database, certified that the repository was instancied before.
+  /// return an instance from database, certified that the repository was instantiated before.
   DatabaseContract get database {
     try {
       return IoD.read<DatabaseContract>();
     } catch (_) {
-      throw ("Respository not instancied, please, call the init function before use it.");
+      throw Exception(
+        "Repository not instantiated, please, call the init function before use it.",
+      );
     }
   }
 
-  /// return an instance from authentication service, certified that the repository was instancied before.
+  /// return an instance from authentication service, certified that the repository was instantiated before.
   AuthContract get authentication {
     try {
       return IoD.read<AuthContract>();
     } catch (_) {
-      throw ("Respository not instancied, please, call the init function before use it.");
+      throw Exception(
+        "Repository not instantiated, please, call the init function before use it.",
+      );
     }
   }
 }

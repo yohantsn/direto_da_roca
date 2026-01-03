@@ -8,4 +8,7 @@ class PasswordWeakException extends AuthExceptions {}
 
 class EmailInvalidException extends AuthExceptions {}
 
-class OtherException extends AuthExceptions {}
+class OtherException extends AuthExceptions {
+  final String statusCode;
+  OtherException(this.statusCode);
+}

@@ -50,16 +50,16 @@ void main() {
       expect(result, [testData[0]]);
     });
 
-    test('greatThan filter', () async {
-      final filter = FilterParameters.greatThan(key, 1);
+    test('greaterThan filter', () async {
+      final filter = FilterParameters.greaterThan(key, 1);
       final result = await databaseImpl.readData(tableName, filter: filter);
 
       expect(result.length, 2);
       expect(result, containsAll([testData[1], testData[2]]));
     });
 
-    test('greatThanOrEqual filter', () async {
-      final filter = FilterParameters.greatThanOrEqual(key, 2);
+    test('greaterThanOrEqual filter', () async {
+      final filter = FilterParameters.greaterThanOrEqual(key, 2);
       final result = await databaseImpl.readData(tableName, filter: filter);
 
       expect(result.length, 2);
@@ -114,8 +114,8 @@ void main() {
       expect(remaining.map((e) => e['id']), isNot(contains(1)));
     });
 
-    test('greatThan filter', () async {
-      final filter = FilterParameters.greatThan(key, 1);
+    test('greaterThan filter', () async {
+      final filter = FilterParameters.greaterThan(key, 1);
       await databaseImpl.deleteData(tableName, filter: filter);
 
       final remaining = await supabaseClient.from(tableName).select();
@@ -123,8 +123,8 @@ void main() {
       expect(remaining.first['id'], equals(1));
     });
 
-    test('greatThanOrEqual filter', () async {
-      final filter = FilterParameters.greatThanOrEqual(key, 2);
+    test('greaterThanOrEqual filter', () async {
+      final filter = FilterParameters.greaterThanOrEqual(key, 2);
       await databaseImpl.deleteData(tableName, filter: filter);
 
       final remaining = await supabaseClient.from(tableName).select();
@@ -216,8 +216,8 @@ void main() {
       expect(result.firstWhere((e) => e['id'] == 1)['name'], equals('updated'));
     });
 
-    test('greatThan filter', () async {
-      final filter = FilterParameters.greatThan(key, 1);
+    test('greaterThan filter', () async {
+      final filter = FilterParameters.greaterThan(key, 1);
       await databaseImpl.updateData(
         tableName,
         data: {'status': 'updated'},
@@ -239,8 +239,8 @@ void main() {
       );
     });
 
-    test('greatThanOrEqual filter', () async {
-      final filter = FilterParameters.greatThanOrEqual(key, 2);
+    test('greaterThanOrEqual filter', () async {
+      final filter = FilterParameters.greaterThanOrEqual(key, 2);
       await databaseImpl.updateData(
         tableName,
         data: {'name': 'batch_updated'},

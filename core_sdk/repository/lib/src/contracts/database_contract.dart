@@ -2,7 +2,7 @@ import 'package:repository/src/parameters/filter_parameters.dart';
 
 abstract interface class DatabaseContract {
   /// Use this function to get a list of data from remote database, is necessary inform the table some filter.
-  Future<List<Map<String, dynamic>>> readData(
+  Future<List<T>> readData<T>(
     String tableName, {
     required FilterParameters filter,
   });

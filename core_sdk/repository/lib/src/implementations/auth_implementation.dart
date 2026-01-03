@@ -21,16 +21,16 @@ class AuthImplementation implements AuthContract {
 
       final user = response.user;
       if (user == null) {
-        throw ();
+        throw OtherException('unexpected_error');
       }
       return AuthUserResponse(user.id, user.email);
     } on AuthApiException catch (e) {
       if (e.statusCode == 'user_not_found') {
         throw UserNotFoundException();
       }
-      throw OtherException();
+      throw OtherException(e.statusCode ?? 'unexpected_error');
     } catch (_) {
-      throw OtherException();
+      throw OtherException('unexpected_error');
     }
   }
 
@@ -44,7 +44,7 @@ class AuthImplementation implements AuthContract {
 
       final user = response.user;
       if (user == null) {
-        throw ();
+        throw OtherException('unexpected_error');
       }
       return AuthUserResponse(user.id, user.email);
     } on AuthApiException catch (e) {
@@ -57,9 +57,9 @@ class AuthImplementation implements AuthContract {
       if (e.statusCode == 'weak_password') {
         throw PasswordWeakException();
       }
-      throw OtherException();
+      throw OtherException(e.statusCode ?? 'unexpected_error');
     } catch (_) {
-      throw OtherException();
+      throw OtherException('unexpected_error');
     }
   }
 
@@ -76,9 +76,9 @@ class AuthImplementation implements AuthContract {
       if (e.statusCode == 'weak_password') {
         throw PasswordWeakException();
       }
-      throw OtherException();
+      throw OtherException(e.statusCode ?? 'unexpected_error');
     } catch (_) {
-      throw OtherException();
+      throw OtherException('unexpected_error');
     }
   }
 }
