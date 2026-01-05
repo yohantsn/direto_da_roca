@@ -24,4 +24,7 @@ abstract interface class AuthContract {
 
   /// If the user is already logged will be returned true.
   bool get isLogged;
+
+  /// If the user is logged will be returned the [AuthUserResponse] that contains unique user ID and the user email.
+  AuthUserResponse? get user;
 }

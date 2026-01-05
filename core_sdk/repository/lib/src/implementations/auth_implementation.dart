@@ -14,13 +14,16 @@ class AuthImplementation implements AuthContract {
   @override
   Future<AuthUserResponse> signIn(AuthParameters params) async {
     try {
-      final response = await _authClient.signInWithPassword(email: params.email, password: params.password);
+      final response = await _authClient.signInWithPassword(
+        email: params.email,
+        password: params.password,
+      );
 
       final user = response.user;
       if (user == null) {
         throw OtherException('unexpected_error');
       }
-      return AuthUserResponse(user.id, user.email);
+      return AuthUserResponse(userId: user.id, userEmail: user.email);
     } on AuthApiException catch (e) {
       if (e.statusCode == 'user_not_found') {
         throw UserNotFoundException();
@@ -34,13 +37,16 @@ class AuthImplementation implements AuthContract {
   @override
   Future<AuthUserResponse> signUp(AuthParameters params) async {
     try {
-      final response = await _authClient.signUp(email: params.email, password: params.password);
+      final response = await _authClient.signUp(
+        email: params.email,
+        password: params.password,
+      );
 
       final user = response.user;
       if (user == null) {
         throw OtherException('unexpected_error');
       }
-      return AuthUserResponse(user.id, user.email);
+      return AuthUserResponse(userId: user.id, userEmail: user.email);
     } on AuthApiException catch (e) {
       if (e.statusCode == 'email_address_invalid') {
         throw EmailInvalidException();
@@ -74,5 +80,15 @@ class AuthImplementation implements AuthContract {
     } catch (_) {
       throw OtherException('unexpected_error');
     }
+  }
+
+  @override
+  AuthUserResponse? get user {
+    final user = _authClient.currentUser;
+    if (user == null) {
+      return null;
+    }
+
+    return AuthUserResponse(userId: user.id, userEmail: user.email);
   }
 }
