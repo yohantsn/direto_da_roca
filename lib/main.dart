@@ -9,8 +9,33 @@ void main() async {
   await repository.init();
   runApp(
     MaterialApp(
-      theme: ThemeData(colorScheme: HortaColor.light()),
-      home: HortaScaffold(body: SizedBox.shrink()),
+      theme: HortaTheme.light,
+      home: HortaScaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              HortaProductGrid(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return HortaProductCard(
+                    parameters: HortaProductCardParameters(
+                      imageUrl:
+                          "https://www.freeiconspng.com/uploads/no-image-icon.jpg",
+                      title: "Produto $index",
+                      price: (index + 1 * 2.5).toStringAsFixed(2),
+                      unit: "kg",
+                      status: ProductStatus.inStock,
+                      currency: "R\$",
+                      onFailureImage: 'assets/images/logo.png',
+                      onOrderPressed: () {},
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     ),
   );
 }
