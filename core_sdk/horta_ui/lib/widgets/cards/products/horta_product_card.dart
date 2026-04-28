@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:horta_ui/widgets/cards/products/horta_product_card_parameters.dart';
+import 'package:horta_ui/widgets/padding/horta_padding.dart';
 
 class HortaProductCard extends StatelessWidget {
   final HortaProductCardParameters parameters;
   static const _kImageHeight = 250.0;
   static const _kborderRadiusValue = 16.0;
-  static const _kPaddingValue = 16.0;
 
   const HortaProductCard({super.key, required this.parameters});
 
@@ -15,9 +15,7 @@ class HortaProductCard extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: .circular(_kborderRadiusValue),
-        side: BorderSide(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
-        ),
+        side: BorderSide(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5)),
       ),
       color: Theme.of(context).colorScheme.onPrimary,
       child: Column(
@@ -26,8 +24,8 @@ class HortaProductCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Padding(
-                padding: .all(_kPaddingValue),
+              HortaPadding(
+                padding: .all(.medium),
                 child: ClipRRect(
                   borderRadius: .all(.circular(_kborderRadiusValue)),
                   child: Image.network(
@@ -51,38 +49,24 @@ class HortaProductCard extends StatelessWidget {
                 right: 24,
                 child: Container(
                   padding: .symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: parameters.status.color,
-                    borderRadius: .circular(20),
-                  ),
-                  child: Text(
-                    parameters.status.name,
-                    style: TextStyle(color: Colors.white, fontSize: 10),
-                  ),
+                  decoration: BoxDecoration(color: parameters.status.color, borderRadius: .circular(20)),
+                  child: Text(parameters.status.name, style: TextStyle(color: Colors.white, fontSize: 10)),
                 ),
               ),
             ],
           ),
-          Padding(
-            padding: const .all(_kPaddingValue),
+          HortaPadding(
+            padding: .all(.medium),
             child: Column(
               crossAxisAlignment: .start,
               mainAxisAlignment: .spaceBetween,
               mainAxisSize: .max,
               children: [
-                Text(
-                  parameters.title,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium?.copyWith(fontWeight: .bold),
-                ),
+                Text(parameters.title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: .bold)),
                 const SizedBox(height: 4),
                 Text(
                   "${parameters.currency} ${parameters.price} / ${parameters.unit}",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                    fontWeight: .w600,
-                  ),
+                  style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: .w600),
                 ),
                 const SizedBox(height: 12),
                 Row(
@@ -93,9 +77,7 @@ class HortaProductCard extends StatelessWidget {
                         icon: Icon(Icons.chat),
                         label: Text("Pedir agora"),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(
-                            context,
-                          ).colorScheme.secondary,
+                          backgroundColor: Theme.of(context).colorScheme.secondary,
                           foregroundColor: Colors.white,
                         ),
                       ),
