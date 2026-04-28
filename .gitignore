@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# AiuriSDK Configuration (auto-generated, contains secrets)
+lib/config/aiuri_config_generated.dart
+.env

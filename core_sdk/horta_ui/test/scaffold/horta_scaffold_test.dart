@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:horta_ui/horta_ui.dart';
 import 'package:horta_ui/theme/horta_color.dart';
 import 'package:horta_ui/theme/horta_theme.dart';
 import 'package:horta_ui/widgets/horta_scaffold.dart';
@@ -10,7 +11,20 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           theme: HortaTheme.light,
-          home: HortaScaffold(body: SizedBox.shrink()),
+          home: Builder(
+            builder: (context) => HortaScaffold(
+              appBarDelegate: HortaAppBarDelegate(
+                leadingImagePath:
+                    'packages/horta_ui/assets/images/background.jpg',
+                searchBar: HortaInputText.search(context),
+                filterBar: HortaFilterBar(
+                  categories: categories,
+                  defaultCategory: defaultCategory,
+                ),
+              ),
+              children: [SizedBox.shrink()],
+            ),
+          ),
         ),
       );
       await tester.pumpAndSettle();

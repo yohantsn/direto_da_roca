@@ -15,8 +15,8 @@ dependencies:
     path: core_sdk/horta_ui
   common_models:
     path: core_sdk/common_models
-  repository: 
-    path: core_sdk/repository
+  aiuri_sdk: 
+    path: ../aiuri_sdk
 
 dev_dependencies:
   flutter_test:
