@@ -4,17 +4,20 @@ class HortaColor extends ColorScheme {
   HortaColor.light() : super.light();
 
   @override
-  Color get primary => Color(0xFF8B4513);
+  Color get primary => Color(0xFF4E342E);
 
   @override
   Color get onPrimary => Color(0xFFFFFFFF);
 
   @override
-  Color get secondary => Color(0xFF2E7D32);
+  Color get secondary => Color(0xFF386641);
 
   @override
-  Color get surface => Color(0xFFFDF5E6);
+  Color get surface => Color(0xFFF2E8CF);
 
   @override
-  final Color outline = Color(0xFFD2B48C);
+  final Color outline = Color(0xFF4E342E);
+
+  @override
+  Color get tertiary => Color(0xFFBC4749);
 }
