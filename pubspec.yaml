@@ -16,7 +16,9 @@ dependencies:
   common_models:
     path: core_sdk/common_models
   aiuri_sdk: 
-    path: ../aiuri_sdk
+    git:
+      url: https://github.com/yohantsn/aiuri_sdk
+      ref: 0.0.1
 
 dev_dependencies:
   flutter_test:

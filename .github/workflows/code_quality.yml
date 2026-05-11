@@ -1,0 +1,125 @@
+name: Code Quality
+
+on:
+  pull_request:
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Dart SDK
+        uses: dart-lang/setup-dart@v2
+        with:
+          sdk-version: stable
+
+      - name: Install Dependencies
+        run: |
+          flutter pub get
+          cd core_sdk/common_models && flutter pub get
+          cd ../horta_ui && flutter pub get
+
+      - name: Run Dart Analyzer
+        run: |
+          dart analyze --fatal-infos --fatal-warnings
+          cd core_sdk/common_models && dart analyze --fatal-infos --fatal-warnings
+          cd ../horta_ui && dart analyze --fatal-infos --fatal-warnings
+        continue-on-error: true
+
+      - name: Check Code Formatting
+        run: |
+          flutter format --set-exit-if-changed .
+          if [ $? -ne 0 ]; then
+            echo "Code formatting issues found. Please run 'flutter format .' and commit the changes."
+            exit 1
+          fi
+          cd core_sdk/common_models && flutter format --set-exit-if-changed .
+          if [ $? -ne 0 ]; then
+            echo "Code formatting issues found in core_sdk/common_models. Please run 'flutter format .' and commit the changes."
+            exit 1
+          fi
+          cd ../horta_ui && flutter format --set-exit-if-changed .
+          if [ $? -ne 0 ]; then
+            echo "Code formatting issues found in core_sdk/horta_ui. Please run 'flutter format .' and commit the changes."
+            exit 1
+          fi
+
+      - name: Find Unused Files
+        run: |
+          flutter pub run unused_files:unused_files --no-ignore-unused-files
+          cd core_sdk/common_models && flutter pub run unused_files:unused_files --no-ignore-unused-files
+          cd ../horta_ui && flutter pub run unused_files:unused_files --no-ignore-unused-files
+        continue-on-error: true
+
+      - name: Detect Duplicate Code
+        run: |
+          flutter pub run dcdg
+          cd core_sdk/common_models && flutter pub run dcdg
+          cd ../horta_ui && flutter pub run dcdg
+        continue-on-error: true
+
+      - name: Comment on PR with Results
+        uses: actions/github-script@v6
+        env:
+          ANALYZE_RESULT: ${{ steps.analyze.outputs.result }}
+          FORMAT_RESULT: ${{ steps.format.outputs.result }}
+          UNUSED_FILES_RESULT: ${{ steps.unused_files.outputs.result }}
+          DUPLICATE_CODE_RESULT: ${{ steps.duplicate_code.outputs.result }}
+        with:
+          script: |
+            const { context, github } = require('@actions/github');
+
+            let commentBody = '';
+
+            if (process.env.ANALYZE_RESULT) {
+              commentBody += `### Dart Analyzer Results\n\`\`\`\n${process.env.ANALYZE_RESULT}\n\`\`\`\n`;
+            }
+
+            if (process.env.FORMAT_RESULT) {
+              commentBody += `### Code Formatting Issues\n\`\`\`\n${process.env.FORMAT_RESULT}\n\`\`\`\n`;
+            }
+
+            if (process.env.UNUSED_FILES_RESULT) {
+              commentBody += `### Unused Files\n\`\`\`\n${process.env.UNUSED_FILES_RESULT}\n\`\`\`\n`;
+            }
+
+            if (process.env.DUPLICATE_CODE_RESULT) {
+              commentBody += `### Duplicate Code\n\`\`\`\n${process.env.DUPLICATE_CODE_RESULT}\n\`\`\`\n`;
+            }
+
+            if (commentBody) {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              });
+            }
+        env:
+          ANALYZE_RESULT: ${{ steps.analyze.outputs.result }}
+          FORMAT_RESULT: ${{ steps.format.outputs.result }}
+          UNUSED_FILES_RESULT: ${{ steps.unused_files.outputs.result }}
+          DUPLICATE_CODE_RESULT: ${{ steps.duplicate_code.outputs.result }}
+
+      - name: Set Outputs
+        id: analyze
+        run: echo "::set-output name=result::$(dart analyze --fatal-infos --fatal-warnings 2>&1 || true)"
+
+      - name: Set Outputs
+        id: format
+        run: |
+          result=$(flutter format --set-exit-if-changed . 2>&1 || true)
+          if [ $? -ne 0 ]; then
+            echo "::set-output name=result::$result"
+          fi
+
+      - name: Set Outputs
+        id: unused_files
+        run: echo "::set-output name=result::$(flutter pub run unused_files:unused_files --no-ignore-unused-files 2>&1 || true)"
+
+      - name: Set Outputs
+        id: duplicate_code
+        run: echo "::set-output name=result::$(flutter pub run dcdg 2>&1 || true)"
