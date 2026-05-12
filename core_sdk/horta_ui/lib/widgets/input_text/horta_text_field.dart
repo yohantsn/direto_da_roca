@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../theme/horta_color.dart';
 import '../theme/horta_text_theme.dart';
 import '../padding/horta_padding.dart';
@@ -10,7 +9,6 @@ class HortaTextField extends StatefulWidget {
   final bool isObscure;
   final ValueChanged<String>? onChanged;
   final TextEditingController? controller;
-  final String? errorMsg;
   final TextInputType? keyboardType;
   final int maxLines;
   final Widget? prefixIcon;
@@ -22,7 +20,6 @@ class HortaTextField extends StatefulWidget {
     this.isObscure = false,
     this.onChanged,
     this.controller,
-    this.errorMsg,
     this.keyboardType,
     this.maxLines = 1,
     this.prefixIcon,
@@ -148,8 +145,8 @@ class _HortaTextFieldState extends State<HortaTextField> {
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    return Padding(
-      padding: HortaEdgeInsets.only(top: HortaPaddingSize.medium).value,
+    return HortaPadding(
+      padding: HortaEdgeInsets.only(top: HortaPaddingSize.medium),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -209,16 +206,6 @@ class _HortaTextFieldState extends State<HortaTextField> {
               ),
             ),
           ),
-          if (widget.errorMsg != null && widget.errorMsg!.isNotEmpty)
-            Padding(
-              padding: HortaEdgeInsets.only(top: HortaPaddingSize.small).value,
-              child: Text(
-                widget.errorMsg!,
-                style: textTheme.bodySmall?.copyWith(
-                  color: colorScheme.error,
-                ),
-              ),
-            ),
         ],
       ),
     );
