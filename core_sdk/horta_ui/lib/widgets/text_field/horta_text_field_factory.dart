@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:core_sdk/horta_ui/widgets/text_field/horta_text_field.dart';
-import 'package:core_sdk/horta_ui/widgets/icons/horta_icons.dart';
 
-class HortaTextField {
-  factory HortaTextField.name({
+extension HortaTextFieldExtensions on HortaTextField {
+  static HortaTextField name({
     Key? key,
     String? hint,
     ValueChanged<String>? onChanged,
@@ -17,13 +15,12 @@ class HortaTextField {
       hint: hint,
       onChanged: onChanged,
       controller: controller,
-      errorMsg: errorMsg,
       keyboardType: TextInputType.name,
-      prefixIcon: const Icon(HortaIcons.person),
+      prefixIcon: const Icon(Icons.person),
     );
   }
 
-  factory HortaTextField.email({
+  static HortaTextField email({
     Key? key,
     String? hint,
     ValueChanged<String>? onChanged,
@@ -36,13 +33,12 @@ class HortaTextField {
       hint: hint,
       onChanged: onChanged,
       controller: controller,
-      errorMsg: errorMsg,
       keyboardType: TextInputType.emailAddress,
-      prefixIcon: const Icon(HortaIcons.email),
+      prefixIcon: const Icon(Icons.email),
     );
   }
 
-  factory HortaTextField.phone({
+  static HortaTextField phone({
     Key? key,
     String? hint,
     ValueChanged<String>? onChanged,
@@ -55,13 +51,12 @@ class HortaTextField {
       hint: hint,
       onChanged: onChanged,
       controller: controller,
-      errorMsg: errorMsg,
       keyboardType: TextInputType.phone,
-      prefixIcon: const Icon(HortaIcons.phone),
+      prefixIcon: const Icon(Icons.phone),
     );
   }
 
-  factory HortaTextField.cep({
+  static HortaTextField cep({
     Key? key,
     String? hint,
     ValueChanged<String>? onChanged,
@@ -74,13 +69,12 @@ class HortaTextField {
       hint: hint,
       onChanged: onChanged,
       controller: controller,
-      errorMsg: errorMsg,
       keyboardType: TextInputType.number,
-      prefixIcon: const Icon(HortaIcons.location_on),
+      prefixIcon: const Icon(Icons.location_on),
     );
   }
 
-  factory HortaTextField.password({
+  static HortaTextField password({
     Key? key,
     String? hint,
     ValueChanged<String>? onChanged,
@@ -93,11 +87,10 @@ class HortaTextField {
       hint: hint,
       onChanged: onChanged,
       controller: controller,
-      errorMsg: errorMsg,
       keyboardType: TextInputType.visiblePassword,
       isObscure: true,
-      prefixIcon: const Icon(HortaIcons.lock),
-      suffixIcon: const Icon(HortaIcons.visibility),
+      prefixIcon: const Icon(Icons.lock),
+      suffixIcon: const Icon(Icons.visibility),
     );
   }
 }
