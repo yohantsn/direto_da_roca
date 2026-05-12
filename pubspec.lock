@@ -12,9 +12,11 @@ packages:
   aiuri_sdk:
     dependency: "direct main"
     description:
-      path: "../aiuri_sdk"
-      relative: true
-    source: path
+      path: "."
+      ref: "0.0.1"
+      resolved-ref: bc71a607d3036768a789547e281ad08c10b9eb60
+      url: "https://github.com/yohantsn/aiuri_sdk"
+    source: git
     version: "0.0.1"
   app_links:
     dependency: transitive
@@ -708,4 +710,4 @@ packages:
     version: "2.1.0"
 sdks:
   dart: ">=3.10.1 <4.0.0"
-  flutter: ">=3.35.0"
+  flutter: "3.41.9"

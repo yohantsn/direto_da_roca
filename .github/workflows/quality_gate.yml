@@ -1,0 +1,451 @@
+name: Quality Gate
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+concurrency:
+  group: quality-gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  detect-changes:
+    name: 🗺️ Detect Changed Modules
+    runs-on: ubuntu-latest
+    outputs:
+      modules: ${{ steps.detect.outputs.modules }}
+      has_changes: ${{ steps.detect.outputs.has_changes }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed Flutter modules
+        id: detect
+        run: |
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          MODULES=()
+          while IFS= read -r file; do
+            dir=$(dirname "$file")
+            while [ "$dir" != "." ] && [ "$dir" != "/" ]; do
+              if [ -f "$dir/pubspec.yaml" ]; then
+                MODULES+=("$dir")
+                break
+              fi
+              dir=$(dirname "$dir")
+            done
+          
+            if [ -f "pubspec.yaml" ] && [[ "$file" != *"/"* ]]; then
+              MODULES+=(".")
+            fi
+          done <<< "$CHANGED_FILES"
+
+         
+          UNIQUE_MODULES=$(printf '%s\n' "${MODULES[@]}" | sort -u | jq -R . | jq -sc .)
+
+          if [ "$UNIQUE_MODULES" = "[]" ] || [ -z "$UNIQUE_MODULES" ]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "modules=[]" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "modules=$UNIQUE_MODULES" >> $GITHUB_OUTPUT
+          fi
+
+
+  format-check:
+    name: Dart Format
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    outputs:
+      result: ${{ steps.format.outputs.result }}
+      details: ${{ steps.format.outputs.details }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.9'
+          channel: stable 
+          cache: true
+
+      - name: Check formatting
+        id: format
+        run: |
+          MODULES='${{ needs.detect-changes.outputs.modules }}'
+          FAILED_FILES=""
+
+          for module in $(echo "$MODULES" | jq -r '.[]'); do
+            echo "Checking format in: $module"
+            cd "$GITHUB_WORKSPACE/$module"
+
+            UNFORMATTED=$(dart format --output=none --set-exit-if-changed . 2>&1 || true)
+            if echo "$UNFORMATTED" | grep -q "Formatted"; then
+              FAILED_FILES+="$UNFORMATTED\n"
+            fi
+          done
+
+          if [ -n "$FAILED_FILES" ]; then
+            echo "result=failure" >> $GITHUB_OUTPUT
+            echo "details=$(echo -e "$FAILED_FILES" | head -20 | jq -Rs .)" >> $GITHUB_OUTPUT
+          else
+            echo "result=success" >> $GITHUB_OUTPUT
+            echo "details=\"All files are properly formatted\"" >> $GITHUB_OUTPUT
+          fi
+
+  static-analysis:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    outputs:
+      result: ${{ steps.analyze.outputs.result }}
+      errors: ${{ steps.analyze.outputs.errors }}
+      warnings: ${{ steps.analyze.outputs.warnings }}
+      infos: ${{ steps.analyze.outputs.infos }}
+      details: ${{ steps.analyze.outputs.details }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.9'
+          channel: stable 
+          cache: true
+
+      - name: Run flutter analyze
+        id: analyze
+        run: |
+          MODULES='${{ needs.detect-changes.outputs.modules }}'
+          TOTAL_ERRORS=0
+          TOTAL_WARNINGS=0
+          TOTAL_INFOS=0
+          ALL_OUTPUT=""
+
+          for module in $(echo "$MODULES" | jq -r '.[]'); do
+            echo "Analyzing: $module"
+            cd "$GITHUB_WORKSPACE/$module"
+            flutter pub get --quiet
+
+            OUTPUT=$(flutter analyze --no-pub 2>&1 || true)
+            ALL_OUTPUT+="### \`$module\`\n$OUTPUT\n\n"
+
+            ERRORS=$(echo "$OUTPUT" | grep -c "error •" || true)
+            WARNINGS=$(echo "$OUTPUT" | grep -c "warning •" || true)
+            INFOS=$(echo "$OUTPUT" | grep -c "info •" || true)
+
+            TOTAL_ERRORS=$((TOTAL_ERRORS + ERRORS))
+            TOTAL_WARNINGS=$((TOTAL_WARNINGS + WARNINGS))
+            TOTAL_INFOS=$((TOTAL_INFOS + INFOS))
+          done
+
+          echo "errors=$TOTAL_ERRORS" >> $GITHUB_OUTPUT
+          echo "warnings=$TOTAL_WARNINGS" >> $GITHUB_OUTPUT
+          echo "infos=$TOTAL_INFOS" >> $GITHUB_OUTPUT
+          echo "details=$(echo -e "$ALL_OUTPUT" | jq -Rs .)" >> $GITHUB_OUTPUT
+
+          if [ "$TOTAL_ERRORS" -gt 0 ]; then
+            echo "result=failure" >> $GITHUB_OUTPUT
+          elif [ "$TOTAL_WARNINGS" -gt 0 ]; then
+            echo "result=warning" >> $GITHUB_OUTPUT
+          else
+            echo "result=success" >> $GITHUB_OUTPUT
+          fi
+
+  test-coverage:
+    name: Tests & Coverage
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    outputs:
+      result: ${{ steps.coverage.outputs.result }}
+      details: ${{ steps.coverage.outputs.details }}
+      coverage_table: ${{ steps.coverage.outputs.coverage_table }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.9'
+          channel: stable 
+          cache: true
+
+      - name: Install lcov
+        run: sudo apt-get install -y lcov
+
+      - name: Run tests with coverage
+        id: coverage
+        run: |
+          MODULES='${{ needs.detect-changes.outputs.modules }}'
+          FAILED_MODULES=""
+          LOW_COVERAGE_MODULES=""
+          COVERAGE_TABLE="| Módulo | Cobertura | Status |\n|--------|-----------|--------|\n"
+          OVERALL_RESULT="success"
+
+          for module in $(echo "$MODULES" | jq -r '.[]'); do
+            echo "Testing: $module"
+            cd "$GITHUB_WORKSPACE/$module"
+            flutter pub get --quiet
+
+            
+            if [ ! -d "test" ]; then
+              COVERAGE_TABLE+="| \`$module\` | N/A | No tests |\n"
+              continue
+            fi
+
+            # Executa os testes
+            TEST_OUTPUT=$(flutter test --coverage --no-pub 2>&1)
+            TEST_EXIT=$?
+
+            if [ $TEST_EXIT -ne 0 ]; then
+              FAILED_MODULES+="- \`$module\`: Failing tests\n"
+              COVERAGE_TABLE+="| \`$module\` | ❌ | ❌ Fail |\n"
+              OVERALL_RESULT="failure"
+              continue
+            fi
+
+            if [ -f "coverage/lcov.info" ]; then
+              COVERAGE_SUMMARY=$(lcov --summary coverage/lcov.info 2>&1 | grep "lines" || echo "")
+              COVERAGE_PCT=$(echo "$COVERAGE_SUMMARY" | grep -oP '\d+\.\d+(?=%)' | head -1)
+
+              if [ -z "$COVERAGE_PCT" ]; then
+                COVERAGE_PCT="0"
+              fi
+
+              COVERAGE_INT=$(echo "$COVERAGE_PCT" | cut -d. -f1)
+
+              if [ "$COVERAGE_INT" -ge 80 ]; then
+                COVERAGE_TABLE+="| \`$module\` | ${COVERAGE_PCT}% | ✅ |\n"
+              else
+                COVERAGE_TABLE+="| \`$module\` | ${COVERAGE_PCT}% | ❌ < 80% |\n"
+                LOW_COVERAGE_MODULES+="- \`$module\`: ${COVERAGE_PCT}% (min: 80%)\n"
+                OVERALL_RESULT="failure"
+              fi
+            else
+              COVERAGE_TABLE+="| \`$module\` | N/A | ⚠️ No reports|\n"
+            fi
+          done
+
+          echo "result=$OVERALL_RESULT" >> $GITHUB_OUTPUT
+          echo "coverage_table=$(echo -e "$COVERAGE_TABLE" | jq -Rs .)" >> $GITHUB_OUTPUT
+
+          DETAILS=""
+          [ -n "$FAILED_MODULES" ] && DETAILS+="**Failing tests:**\n$FAILED_MODULES\n"
+          [ -n "$LOW_COVERAGE_MODULES" ] && DETAILS+="**Insufficient coverage:**\n$LOW_COVERAGE_MODULES"
+          echo "details=$(echo -e "$DETAILS" | jq -Rs .)" >> $GITHUB_OUTPUT
+
+
+  dead-code-duplicates:
+    name: 🧟 Dead Code & Duplicates
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    outputs:
+      result: ${{ steps.analysis.outputs.result }}
+      details: ${{ steps.analysis.outputs.details }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.9'
+          channel: stable
+          cache: true
+
+      - name: Install dart_code_metrics
+        run: |
+          dart pub global activate dart_code_metrics
+
+      - name: Detect dead code & duplicates
+        id: analysis
+        run: |
+          MODULES='${{ needs.detect-changes.outputs.modules }}'
+          DEAD_CODE_FINDINGS=""
+          DUPLICATE_FINDINGS=""
+          OVERALL_RESULT="success"
+
+          for module in $(echo "$MODULES" | jq -r '.[]'); do
+            echo "Checking dead code/duplicates in: $module"
+            cd "$GITHUB_WORKSPACE/$module"
+            flutter pub get --quiet
+
+            # Código morto via dart_code_metrics
+            DCM_OUTPUT=$(dart pub global run dart_code_metrics:metrics analyze lib \
+              --metrics=unused-code \
+              --reporter=console 2>&1 || true)
+
+            if echo "$DCM_OUTPUT" | grep -qi "unused"; then
+              DEAD_CODE_FINDINGS+="**\`$module\`**:\n\`\`\`\n$(echo "$DCM_OUTPUT" | grep -i "unused" | head -10)\n\`\`\`\n"
+              OVERALL_RESULT="warning"
+            fi
+
+            # Funções/métodos duplicados — heurística via diff de assinaturas
+            FUNC_SIGS=$(grep -rn "^\s*\(Future\|void\|String\|int\|bool\|double\|List\|Map\|Widget\|dynamic\)" lib/ \
+              --include="*.dart" 2>/dev/null | \
+              grep -oP '(?<=\s)\w+\s*\(' | sort | uniq -d | head -20 || true)
+
+            if [ -n "$FUNC_SIGS" ]; then
+              DUPLICATE_FINDINGS+="**\`$module\`** — possíveis funções duplicadas:\n\`\`\`\n$FUNC_SIGS\n\`\`\`\n"
+              OVERALL_RESULT="warning"
+            fi
+          done
+
+          echo "result=$OVERALL_RESULT" >> $GITHUB_OUTPUT
+
+          DETAILS=""
+          [ -n "$DEAD_CODE_FINDINGS" ] && DETAILS+="### 🧟 Dead Code\n$DEAD_CODE_FINDINGS\n"
+          [ -n "$DUPLICATE_FINDINGS" ] && DETAILS+="### 🔁 Possible Duplicates\n$DUPLICATE_FINDINGS\n"
+          [ -z "$DETAILS" ] && DETAILS="No issues found."
+          echo "details=$(echo -e "$DETAILS" | jq -Rs .)" >> $GITHUB_OUTPUT
+
+
+  pr-comment:
+    name: 💬 PR Quality Report
+    runs-on: ubuntu-latest
+    needs:
+      - detect-changes
+      - format-check
+      - static-analysis
+      - test-coverage
+      - dead-code-duplicates
+    if: always() && needs.detect-changes.outputs.has_changes == 'true'
+    steps:
+      - name: Build and post PR comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const formatResult    = '${{ needs.format-check.outputs.result }}';
+            const analyzeResult   = '${{ needs.static-analysis.outputs.result }}';
+            const testResult      = '${{ needs.test-coverage.outputs.result }}';
+            const deadCodeResult  = '${{ needs.dead-code-duplicates.outputs.result }}';
+
+            const icon = (r) => ({ success: '✅', failure: '❌', warning: '⚠️' }[r] ?? '⚙️');
+            const badge = (r) => ({ success: '**PASSOU**', failure: '**FALHOU**', warning: '**ATENÇÃO**' }[r] ?? 'N/A');
+
+            const allPassed = [formatResult, analyzeResult, testResult].every(r => r === 'success');
+            const hasWarnings = [deadCodeResult, analyzeResult].some(r => r === 'warning');
+
+            const overallIcon  = allPassed ? '✅' : '❌';
+            const overallLabel = allPassed
+              ? (hasWarnings ? '⚠️ APPROVED WITH WARNINGS' : '✅ APPROVED')
+              : '❌ REJECTED — fix the required items';
+
+            const coverageTable = JSON.parse('${{ needs.test-coverage.outputs.coverage_table }}' || '""') || '';
+            const analyzeErrors   = '${{ needs.static-analysis.outputs.errors }}';
+            const analyzeWarnings = '${{ needs.static-analysis.outputs.warnings }}';
+            const analyzeInfos    = '${{ needs.static-analysis.outputs.infos }}';
+            const deadDetails     = JSON.parse('${{ needs.dead-code-duplicates.outputs.details }}' || '""') || '';
+            const testDetails     = JSON.parse('${{ needs.test-coverage.outputs.details }}' || '""') || '';
+
+            const body = `## ${overallIcon} Quality Gate — ${overallLabel}
+
+            > Automatic analysis of the PR · ${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}
+
+            ---
+
+            | Check | Status | Result |
+            |-------|--------|-----------|
+            | 🎨 Format | ${icon(formatResult)} | ${badge(formatResult)} |
+            | 🔬 Static Analysis | ${icon(analyzeResult)} | ${badge(analyzeResult)} |
+            | 🧪 Tests & Coverage ≥ 80% | ${icon(testResult)} | ${badge(testResult)} |
+
+            ### Informative Checklist (doesn't block merge, but should be reviewed)
+
+            | Check | Status | Result |
+            |-------|--------|-----------|
+            | 🧟 Dead Code & Duplicates | ${icon(deadCodeResult)} | ${badge(deadCodeResult)} |
+
+            ---
+
+            ### 🧪 Coverage by Module
+
+            ${coverageTable || '_No modules with tests found._'}
+
+            ---
+
+            ### 🔬 Static Analysis
+
+            | Errors | Warnings | Infos |
+            |-------|--------|-------|
+            | ${analyzeErrors} ❌ | ${analyzeWarnings} ⚠️ | ${analyzeInfos} ℹ️ |
+
+            ${parseInt(analyzeErrors) > 0 || parseInt(analyzeWarnings) > 0 ? '> ⚠️ Fix the errors and warnings before merging.' : '> No critical issues found.'}
+
+            ---
+
+            ### 🧟 Dead Code & Duplicates
+
+            ${deadDetails || '_Analysis not available._'}
+
+            ---
+
+            ${testDetails ? `### ❌ Test Failure Details\n\n${testDetails}\n\n---` : ''}
+
+            <details>
+            <summary>ℹ️ How to fix common issues</summary>
+
+            **Formatting:**
+            \`\`\`bash
+            dart format .
+            \`\`\`
+
+            **Static Analysis:**
+            \`\`\`bash
+            flutter analyze
+            \`\`\`
+
+            **Tests & Coverage:**
+            \`\`\`bash
+            flutter test --coverage
+            genhtml coverage/lcov.info -o coverage/html
+            \`\`\`
+
+            **Dead Code:**
+            \`\`\`bash
+            dart pub global run dart_code_metrics:metrics analyze lib
+            \`\`\`
+            </details>
+
+            ---
+            _🤖 Automatically generated by Quality Gate · [View workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})_
+            `;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(c =>
+              c.user.type === 'Bot' && c.body.includes('Quality Gate')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+      - name: Enforce mandatory gates
+        if: |
+          needs.format-check.outputs.result == 'failure' ||
+          needs.static-analysis.outputs.result == 'failure' ||
+          needs.test-coverage.outputs.result == 'failure'
+        run: |
+          echo "❌ Quality Gate Fails. Fix the mandatory items before merging."
+          exit 1
