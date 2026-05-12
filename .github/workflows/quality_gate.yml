@@ -131,7 +131,7 @@ jobs:
           for module in $(echo "$MODULES" | jq -r '.[]'); do
             echo "Analyzing: $module"
             cd "$GITHUB_WORKSPACE/$module"
-            flutter pub get --quiet
+            flutter pub get
 
             OUTPUT=$(flutter analyze --no-pub 2>&1 || true)
             ALL_OUTPUT+="### \`$module\`\n$OUTPUT\n\n"
@@ -190,7 +190,7 @@ jobs:
           for module in $(echo "$MODULES" | jq -r '.[]'); do
             echo "Testing: $module"
             cd "$GITHUB_WORKSPACE/$module"
-            flutter pub get --quiet
+            flutter pub get
 
             
             if [ ! -d "test" ]; then
@@ -271,7 +271,7 @@ jobs:
           for module in $(echo "$MODULES" | jq -r '.[]'); do
             echo "Checking dead code/duplicates in: $module"
             cd "$GITHUB_WORKSPACE/$module"
-            flutter pub get --quiet
+            flutter pub get
 
             # Código morto via dart_code_metrics
             DCM_OUTPUT=$(dart pub global run dart_code_metrics:metrics analyze lib \
