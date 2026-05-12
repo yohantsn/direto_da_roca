@@ -147,7 +147,7 @@ jobs:
           for module in $(echo "$MODULES" | jq -r '.[]'); do
             echo "Analyzing: $module"
             cd "$GITHUB_WORKSPACE/$module"
-            flutter pub get --quiet
+            flutter pub get
 
             OUTPUT=$(flutter analyze --no-pub 2>&1 || true)
 
@@ -223,7 +223,7 @@ jobs:
           for module in $(echo "$MODULES" | jq -r '.[]'); do
             echo "Testing: $module"
             cd "$GITHUB_WORKSPACE/$module"
-            flutter pub get --quiet
+            flutter pub get
 
             if [ ! -d "test" ]; then
               echo "| \`$module\` | N/A | No tests found |" >> "$TABLE_FILE"
@@ -302,7 +302,7 @@ jobs:
           for module in $(echo "$MODULES" | jq -r '.[]'); do
             echo "Checking: $module"
             cd "$GITHUB_WORKSPACE/$module"
-            flutter pub get --quiet
+            flutter pub get
 
             DCM_OUTPUT=$(dart pub global run dart_code_metrics:metrics analyze lib \
               --metrics=unused-code --reporter=console 2>&1 || true)
